@@ -1,67 +1,43 @@
 {% extends "base.html" %}
 {% block body %}
-  <div class="container">
-    <div class="jumbotron">
-      
-        <!-- logo -->
 
-        <div class="input-group search-container">
-            <input type="text" class="form-control" data-url_keywords="{{ url_for('home') }}"
-                  data-url_search="{{ url_for('search') }}" data-url_index="{{ url_for('index') }}"
-                  placeholder="Search all keywords" id="search-pattern">
-            <div class="input-group-btn">
-                <button class="btn btn-default">
-                  <i class="glyphicon glyphicon-search"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="row clearfix library vh-100">
-        <div class="col-sm-3 col-left">
-            <div>
-                <ul class="list-group list-unstyled">
-                  {% for collection in hierarchy %}
-                    {% if collection.collection_id|string == collection_id|string %}
-                      <li>
-                        <label class="tree-toggler nav-header"
-                              title="file path: {{collection.path}}">{{collection.name}}</label>
-                        <ul class="list-group tree">
-                    {% else %}
-                          <li>
+<div class="row clearfix library vh-100">
+    <div class="col-sm-3 col-left">
+        <div>
+            <ul class="list-group list-unstyled">
+                {% for collection in hierarchy %}
+                {% if collection.collection_id|string == collection_id|string %}
+                <li>
+                    <label class="tree-toggler nav-header"
+                           title="file path: {{collection.path}}">{{collection.name}}</label>
+                    <ul class="list-group tree">
+                        {% else %}
+                        <li>
                             <label class="tree-toggler nav-header"
-                                  title="file path: {{collection.path}}">{{collection.name}}</label>
-                            <ul class="list-group  tree collapse" >
-                        {% endif %}
-                              <li class="overview">
-                                <a href="{{ url_for('collection_doc', collection_id=collection.id) }}"><i>Overview</i></a>
-                              </li>
-                            {% for kw in collection.keywords %}
-                              <li class="keyword">
-                                <a href="{{ url_for('keyword_doc', collection_id=collection.id, keyword_id=kw.id) }}">{{kw.name}}</a>
-                              </li>
-                        {% endfor %}
+                                   title="file path: {{collection.path}}">{{collection.name}}</label>
+                            <ul class="list-group  tree collapse">
+                                {% endif %}
+                                <li class="overview">
+                                    <a href="{{ url_for('collection_doc', collection_id=collection.id) }}"><i>Overview</i></a>
+                                </li>
+                                {% for kw in collection.keywords %}
+                                <li class="keyword">
+                                    <a href="{{ url_for('keyword_doc', collection_id=collection.id, keyword_id=kw.id) }}">{{kw.name}}</a>
+                                </li>
+                                {% endfor %}
                             </ul>
-                          </li>
-                  {% endfor %}
-                      </ul>
-            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
         </div>
-          
-
-          <div class="col-sm-9" >
-              <div>
-                {% block content %}
-                {% endblock %}
-              </div>
-          </div>
     </div>
-  </div>
 
-  <div class='footer' id='footer'>
-    <div class="container">
-      <span id='version'>rfhub version {{version}}</span>
+    <div class="col-sm-9">
+        <div id="right">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
-  </div>
+</div>
   
 {% endblock %}
